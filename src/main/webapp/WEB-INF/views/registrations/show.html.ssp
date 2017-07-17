@@ -1,0 +1,84 @@
+<%@val item: model.Registration %>
+<%@val s: skinny.Skinny %>
+
+<%-- Be aware of package imports.
+ 1. src/main/scala/templates/ScalatePackage.scala
+ 2. scalateTemplateConfig in project/Build.scala
+--%>
+
+<h3>${s.i18n.getOrKey("registration.detail")}</h3>
+<hr/>
+#for (notice <- s.flash.notice)
+  <p class="alert alert-info">${notice}</p>
+#end
+<table class="table table-bordered">
+<tbody>
+  <tr>
+    <th>${s.i18n.getOrKey("registration.id")}</th>
+    <td>${item.id}</td>
+  </tr>
+  <tr>
+    <th>${s.i18n.getOrKey("registration.title")}</th>
+    <td>${item.title}</td>
+  </tr>
+  <tr>
+    <th>${s.i18n.getOrKey("registration.name")}</th>
+    <td>${item.name}</td>
+  </tr>
+  <tr>
+    <th>${s.i18n.getOrKey("registration.email")}</th>
+    <td><i>Withheld For Privacy Reasons.</i></td>
+  </tr>
+  <tr>
+    <th>${s.i18n.getOrKey("registration.designation")}</th>
+    <td>${item.designation}</td>
+  </tr>
+  <tr>
+    <th>${s.i18n.getOrKey("registration.organisation")}</th>
+    <td>${item.organisation}</td>
+  </tr>
+  <tr>
+    <th>${s.i18n.getOrKey("registration.country")}</th>
+    <td>${item.country}</td>
+  </tr>
+  <tr>
+    <th>Presenting?</th>
+    <td>
+      #if (item.presenting)
+        Yes
+      #else
+        No
+      #end
+    </td>
+  </tr>
+  <tr>
+    <th>Displaying Posters or Banners?</th>
+    <td>
+      #if (item.displaying)
+        Yes
+      #else
+        No
+      #end
+    </td>
+  </tr>
+  <tr>
+    <th>${s.i18n.getOrKey("registration.presentationTitle1")}</th>
+    <td>${item.presentationTitle1}</td>
+  </tr>
+  <tr>
+    <th>${s.i18n.getOrKey("registration.presentationTitle2")}</th>
+    <td>${item.presentationTitle2}</td>
+  </tr>
+  <tr>
+    <th>${s.i18n.getOrKey("registration.presentationTitle3")}</th>
+    <td>${item.presentationTitle3}</td>
+  </tr>
+
+</tbody>
+</table>
+
+<hr/>
+<div class="form-actions">
+  <a class="btn btn-default" href="${s.url(Controllers.registrations.indexUrl)}">${s.i18n.getOrKey("backToList")}</a>
+
+</div>

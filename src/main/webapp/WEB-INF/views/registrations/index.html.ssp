@@ -1,0 +1,94 @@
+<%@val s: skinny.Skinny %>
+<%@val items: Seq[model.Registration] %>
+<%@val totalPages: Int %>
+<%@val page: Int = s.params.page.map(_.toString.toInt).getOrElse(1) %>
+
+<%-- Be aware of package imports.
+ 1. src/main/scala/templates/ScalatePackage.scala
+ 2. scalateTemplateConfig in project/Build.scala
+--%>
+
+<h3>2017 Pacific GIS/RS Users Conference Registration</h3>
+<hr/>
+#for (notice <- s.flash.notice)
+  <p class="alert alert-info">${notice}</p>
+#end
+
+#if (totalPages > 1)
+  <ul class="pagination">
+    <li>
+      <a href="${s.url(Controllers.registrations.indexUrl, "page" -> 1)}">&laquo;</a>
+    </li>
+    <% val maxPage = Math.min(totalPages, if (page <= 5) 11 else page + 5) %>
+    #for (i <- Math.max(1, maxPage - 10) to maxPage)
+      <li class="${if (i == page) "active" else ""}">
+        <a href="${s.url(Controllers.registrations.indexUrl, "page" -> i)}">${i}</a>
+      </li>
+    #end
+    <li>
+      <a href="${s.url(Controllers.registrations.indexUrl, "page" -> totalPages)}">&raquo;</a>
+    </li>
+    <li>
+      <span>${Math.min(page, totalPages)} / ${totalPages}</span>
+    </li>
+  </ul>
+#end
+
+<p class="pull-right">
+  <a href="${s.url(Controllers.registrations.newUrl)}" class="btn btn-primary">Register Now</a>
+</p>
+
+<b>${items.size}</b> have registered already. Don't miss out!
+
+<table class="table table-bordered">
+<thead>
+  <tr>
+
+    <th>${s.i18n.getOrKey("registration.title")}</th>
+    <th>${s.i18n.getOrKey("registration.name")}</th>
+
+    <th>${s.i18n.getOrKey("registration.designation")}</th>
+    <th>${s.i18n.getOrKey("registration.organisation")}</th>
+    <th>${s.i18n.getOrKey("registration.country")}</th>
+    <th>${s.i18n.getOrKey("registration.presenting")}?</th>
+
+    <th></th>
+  </tr>
+</thead>
+<tbody>
+  #for (item <- items)
+  <tr>
+
+    <td>${item.title}</td>
+    <td>
+    <a href="${s.url(Controllers.registrations.showUrl, "id" -> item.id)}">
+      <b>${item.name}</b>
+    </a>
+    </td>
+
+    <td>${item.designation}</td>
+    <td>${item.organisation}</td>
+    <td>${item.country}</td>
+    <td>
+    #if (item.presenting)
+    Yes
+    #else
+      No
+    #end
+    </td>
+
+    <td>
+      <a href="${s.url(Controllers.registrations.showUrl, "id" -> item.id)}" class="btn btn-default">${s.i18n.getOrKey("detail")}</a>
+
+    </td>
+  </tr>
+  #end
+  #if (items.isEmpty)
+  <tr>
+    <td colspan="13">${s.i18n.getOrKey("empty")}</td>
+  </tr>
+  #end
+</tbody>
+</table>
+
+<a href="${s.url(Controllers.registrations.newUrl)}" class="btn btn-primary">Register Now</a>
